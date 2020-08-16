@@ -8,7 +8,14 @@
 
 .section .data
 	data_items: 
-		.long 1,2,3,4,5,6,7,8,9,100,0
+		.long 1,2,3,4,5,6,7,8,9,100,0	# the .long data type takes up 4 bytes?
+										# 	for each piece of data, which I
+										# 	guess means they fit into
+										# 	registers nicely
+										# 	---
+										# 	other types exist, such as .ascii
+										# 	.int, and .byte
+
 
 .section .text
 
@@ -17,6 +24,9 @@ _start:
 	movl $0, %edi 						# move 0 into index register
 	movl data_items(,%edi,4), %eax		# move number at index %edi into
 										# 	the current number register
+										# 	---
+										# we use a 4 here because .long data
+										# 	is 4 locations in size
 	movl %eax, %ebx 					# move current number into highest
 										# 	number register
 	
@@ -24,6 +34,12 @@ _start:
 		cmpl $0, %eax					# check to see if we are at the end of
 										# 	the list
 		je loop_exit					# if we are, exit loop and program
+										# 	je -- jump if cmpl is equal
+										# 	jg -- jump if a < b
+										# 	jge -- jump if a <= b
+										# 	jl -- jump if a > b
+										# 	jle -- jump if a >= b
+										# 	jmp -- just jump, no cmpl needed
 		incl %edi						# increment our index
 		movl data_items(,%edi,4), %eax	# load next current number using index
 		cmpl %ebx, %eax					# compare current to highest
